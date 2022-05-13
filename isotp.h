@@ -53,7 +53,10 @@ typedef struct IsoTpLink {
                                                      start at sending FC, receive CF 
                                                      end at receive FC */
     int                         receive_protocol_result;
-    uint8_t                     receive_status;                                                     
+    uint8_t                     receive_status;
+
+    // can be set by the user of this object to keep track of the owner
+    void*						owner;
 } IsoTpLink;
 
 /**
@@ -65,10 +68,12 @@ typedef struct IsoTpLink {
  * @param sendbufsize The size of the buffer area.
  * @param recvbuf A pointer to an area in memory which can be used as a buffer for data to be received.
  * @param recvbufsize The size of the buffer area.
+ * @param owner A pointer to the owning object (optional)
  */
 void isotp_init_link(IsoTpLink *link, uint32_t sendid, 
                      uint8_t *sendbuf, uint16_t sendbufsize,
-                     uint8_t *recvbuf, uint16_t recvbufsize);
+                     uint8_t *recvbuf, uint16_t recvbufsize,
+					 void* owner);
 
 /**
  * @brief Polling function; call this function periodically to handle timeouts, send consecutive frames, etc.
@@ -85,7 +90,7 @@ void isotp_poll(IsoTpLink *link);
  * @param data The data received via CAN.
  * @param len The length of the data received.
  */
-void isotp_on_can_message(IsoTpLink *link, uint8_t *data, uint8_t len);
+void isotp_on_can_message(IsoTpLink *link, const uint8_t *data, uint8_t len);
 
 /**
  * @brief Sends ISO-TP frames via CAN, using the ID set in the initialising function.

@@ -23,7 +23,8 @@
 
 /* Private: Determines if by default, padding is added to ISO-TP message frames.
  */
-#define ISO_TP_FRAME_PADDING
+// I disabled ISO_TP_FRAME_PADDING because we don't need to be compatible with a device which always pads out CAN packets (JDW)
+//#define ISO_TP_FRAME_PADDING
 
 #endif
 
